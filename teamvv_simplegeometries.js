@@ -8,8 +8,8 @@ var boxMaterial = new THREE.PointsMaterial({
   color: 0xFFFFFF,
   size: 0.02,
 //map: THREE.ImageUtils.loadTexture("smoke.png"),
-//  blending: THREE.AdditiveBlending,
-//  transparent: true
+  blending: THREE.AdditiveBlending,
+  transparent: true
 });
 var boxSize = 1;
 const geo = new THREE.BoxGeometry(boxSize,boxSize,boxSize);    
@@ -76,7 +76,8 @@ var rotatedGeometries = new THREE.Geometry();
 
 
 var allmeshes = new THREE.Group();
-   
+var mat = new THREE.MeshBasicMaterial( {color: 0xffffef, side: THREE.DoubleSide} );
+
 for (i = 0; i < 720; i+= 90) {
    var newClone = mergedGeometriesMesh.clone();
    newClone.position.x = 5 * Math.cos(i/ 1.57);
@@ -84,15 +85,18 @@ for (i = 0; i < 720; i+= 90) {
 //   allmeshes.add(newClone);
   newClone.updateMatrix();
    rotatedGeometries.merge(newClone.geometry, newClone.matrix); 
+   newClone.material = mat;
 }
 
 rotatedGeometries.merge(cylinder.geometry, cylinder.matrix);
-var rotatedGeometriesMesh = new THREE.Mesh(rotatedGeometries, boxMaterial);
+var rotatedGeometriesMesh = new THREE.Mesh(rotatedGeometries, mat);
           
 allmeshes.add(cylinder);
 //scene.add(mergedGeometriesMesh);
 //scene.add(rotatedGeometriesMesh);
 allmeshes.position.z = -10;
+
+
 
 //scene.add(allmeshes);             
 
