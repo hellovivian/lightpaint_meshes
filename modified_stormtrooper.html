@@ -272,7 +272,7 @@
 
 				var directionalLight = new THREE.DirectionalLight( 0xffffff, 0.8 );
 				//directionalLight.position.set( 0, , -1);
-				scene.add( directionalLight );
+				//scene.add( directionalLight );
 
 				//
 
@@ -423,19 +423,17 @@
 
 				
 				timer += 1; 
-				if (!timer % 5) {
-					//ambientLight.visible = false; 
-				} else {
-					//ambientLight.visible = true; 
-				}
 
 				if (timer > 200) {
-					group.rotation.y -= .1; 
+					group.rotation.y -= .1;
+					
+					if (timer % 5 < 2) {
+						ambientLight.visible = false; 
+					} else {
+						ambientLight.visible = true; 
+					}
 				}
-				
-
 			}
-
 		</script>
 
 	</body>
