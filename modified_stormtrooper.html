@@ -63,7 +63,8 @@
             }
        </script>
 		<script>
-           
+           var timer = 0;
+           var ambientLight; 
            var action1;
            var action2;
            var action3;
@@ -76,6 +77,7 @@
            var action10;
            var action11;
            var action12;
+           var group = new THREE.Group();
            
 			if ( ! Detector.webgl ) Detector.addGetWebGLMessage();
 
@@ -92,12 +94,9 @@
 
 				camera = new THREE.PerspectiveCamera( 25, window.innerWidth / window.innerHeight, 1, 10000 );
 				camera.position.set( 15, 10, - 30 );
-
 				scene = new THREE.Scene();
-
 				clock = new THREE.Clock();
-               
-               exporter = new THREE.OBJExporter();
+               	exporter = new THREE.OBJExporter();
                
 				// collada
 
@@ -110,7 +109,7 @@
 					mixer1 = new THREE.AnimationMixer( avatar1 );
 			        action1 = mixer1.clipAction( animations1[ 0] ).play();  
                     avatar1.position.set(11 * Math.cos(1 * 30 / 180 * 3.14 ),0,11 * Math.sin(1*30 / 180 * 3.14));
-			      scene.add( avatar1 );
+			      	group.add( avatar1 );
                   
 //                   download(exporter.parse(avatar1), 'stormtrooper1.obj','text/obj' );
 				} );
@@ -124,8 +123,8 @@
 
 					mixer2 = new THREE.AnimationMixer( avatar2 );
 			        action2 = mixer2.clipAction( animations2[ 0] ).play();
-                  avatar2.position.set(11 * Math.cos(2*30 / 180 * 3.14 ),0,11 * Math.sin(2*30 / 180 * 3.14));
-			        scene.add( avatar2 );
+                  	avatar2.position.set(11 * Math.cos(2*30 / 180 * 3.14 ),0,11 * Math.sin(2*30 / 180 * 3.14));
+			        group.add( avatar2 );
 //                   download(exporter.parse(avatar2), 'stormtrooper2.obj','text/obj' );
 
 				} );
@@ -138,8 +137,8 @@
 
 					mixer3 = new THREE.AnimationMixer( avatar3 );
 			        action3 = mixer3.clipAction( animations3[ 0] ).play();
-                  avatar3.position.set(11 * Math.cos(3*30 / 180 *3.14),0,11 * Math.sin(3*30 / 180 * 3.14));
-			        scene.add( avatar3 );
+                  	avatar3.position.set(11 * Math.cos(3*30 / 180 *3.14),0,11 * Math.sin(3*30 / 180 * 3.14));
+			        group.add( avatar3 );
 //                   download(exporter.parse(avatar3), 'stormtrooper3.obj','text/obj' );
 
 				} );
@@ -153,10 +152,8 @@
 					mixer4 = new THREE.AnimationMixer( avatar4 );
 			        action4 = mixer4.clipAction( animations4[ 0] ).play();
                     avatar4.position.set(11 * Math.cos(4*30 / 180 * 3.14),0,11 * Math.sin(4*30 / 180 * 3.14));
-			        scene.add( avatar4 );
+			        group.add( avatar4 );
 //               download(exporter.parse(avatar4), 'stormtrooper4.obj','text/obj' );
-
-                   
 				} );
 
                var loader5 = new THREE.ColladaLoader();
@@ -167,10 +164,9 @@
 
 					mixer5 = new THREE.AnimationMixer( avatar5 );
 			        action5 = mixer5.clipAction( animations5[ 0] ).play();
-                  avatar5.position.set(11 * Math.cos(5*30 / 180 * 3.14 ),0,11 * Math.sin(5*30 / 180 * 3.14));
-			        scene.add( avatar5 );
+                  	avatar5.position.set(11 * Math.cos(5*30 / 180 * 3.14 ),0,11 * Math.sin(5*30 / 180 * 3.14));
+			        group.add( avatar5 );
 //                   download(exporter.parse(avatar5), 'stormtrooper5.obj','text/obj' );
-
 				} );
                
                var loader6 = new THREE.ColladaLoader();
@@ -182,10 +178,9 @@
 					mixer6 = new THREE.AnimationMixer( avatar6 );
 			        action6 = mixer6.clipAction( animations6[ 0] ).play();
 
-			        scene.add( avatar6 );
-                  avatar6.position.set(11 * Math.cos(6*30 / 180 * 3.14 ),0,11 * Math.sin(6*30 / 180 * 3.14));
+			        group.add( avatar6 );
+                  	avatar6.position.set(11 * Math.cos(6*30 / 180 * 3.14 ),0,11 * Math.sin(6*30 / 180 * 3.14));
 //                   download(exporter.parse(avatar6), 'stormtrooper6.obj','text/obj' );
-
 				} );
                
                var loader7 = new THREE.ColladaLoader();
@@ -196,10 +191,9 @@
 
 					mixer7 = new THREE.AnimationMixer( avatar7 );
 			        action7 = mixer7.clipAction( animations7[ 0] ).play();
-                 avatar7.position.set(11 * Math.cos(7*30 / 180 * 3.14 ),0,11 * Math.sin(7*30 / 180 * 3.14));
-			        scene.add( avatar7 );
+                 	avatar7.position.set(11 * Math.cos(7*30 / 180 * 3.14 ),0,11 * Math.sin(7*30 / 180 * 3.14));
+			        group.add( avatar7 );
 //                   download(exporter.parse(avatar7), 'stormtrooper7.obj','text/obj' );
-
 				} );
                
                var loader8 = new THREE.ColladaLoader();
@@ -210,11 +204,9 @@
 
 					mixer8 = new THREE.AnimationMixer( avatar8 );
 			        action8 = mixer8.clipAction( animations8[ 0] ).play();
-                  avatar8.position.set(11 * Math.cos(8*30 / 180 * 3.14),0,11 * Math.sin(8*30 / 180 * 3.14));
-			        scene.add( avatar8 );
+                  	avatar8.position.set(11 * Math.cos(8*30 / 180 * 3.14),0,11 * Math.sin(8*30 / 180 * 3.14));
+			        group.add( avatar8 );
 //                    download(exporter.parse(avatar8), 'stormtrooper8.obj','text/obj' );
-
-
 				} );
                
                
@@ -227,9 +219,8 @@
 					mixer9 = new THREE.AnimationMixer( avatar9 );
 			        action9 = mixer9.clipAction( animations9[ 0] ).play();
                     avatar9.position.set(11 * Math.cos(9*30 / 180 * 3.14 ),0,11 * Math.sin(9*30 / 180 * 3.14));
-			        scene.add( avatar9 );
+			        group.add( avatar9 );
 //                    download(exporter.parse(avatar9), 'stormtrooper9.obj','text/obj' );
-
 				} );
                
                var loader10 = new THREE.ColladaLoader();
@@ -240,14 +231,12 @@
 
 					mixer10 = new THREE.AnimationMixer( avatar10 );
 			        action10 = mixer10.clipAction( animations10[ 0] ).play();
-                   avatar10.position.set(11 * Math.cos(10*30 / 180 * 3.14),0,11 * Math.sin(10*30 / 180 * 3.14));
-			        scene.add( avatar10 );
+                  	avatar10.position.set(11 * Math.cos(10*30 / 180 * 3.14),0,11 * Math.sin(10*30 / 180 * 3.14));
+			        group.add( avatar10 );
 //                    download(exporter.parse(avatar10), 'stormtrooper10.obj','text/obj' );
-
-
 				} );
                
-                              var loader11 = new THREE.ColladaLoader();
+                var loader11 = new THREE.ColladaLoader();
 				loader11.load( 'stormtrooper.dae', function ( collada11 ) {
 
 					var animations11 = collada11.animations;
@@ -255,11 +244,9 @@
 
 					mixer11 = new THREE.AnimationMixer( avatar11 );
 			        action11 = mixer11.clipAction( animations11[ 0] ).play();
-                  avatar11.position.set(11 * Math.cos(11*30 / 180 * 3.14),0,11 * Math.sin(11*30 / 180 * 3.14));
-			        scene.add( avatar11 );
+                  	avatar11.position.set(11 * Math.cos(11*30 / 180 * 3.14),0,11 * Math.sin(11*30 / 180 * 3.14));
+			        group.add( avatar11 );
 //                    download(exporter.parse(avatar11), 'stormtrooper11.obj','text/obj' );
-
-
 				} );
                
                var loader12 = new THREE.ColladaLoader();
@@ -271,12 +258,8 @@
 					mixer12 = new THREE.AnimationMixer( avatar12 );
 			        action12 = mixer12.clipAction( animations12[ 0] ).play();
                     avatar12.position.set(11 * Math.cos(12*30 / 180 * 3.14 ),0,11 * Math.sin(12*30 / 180 * 3.14)); 
-			        scene.add( avatar12 );
-                   
-//                   download(exporter.parse(avatar12), 'stormtrooper12.obj','text/obj' );
-
-                   
-
+			        group.add( avatar12 );
+//                  download(exporter.parse(avatar12), 'stormtrooper12.obj','text/obj' );
 				} );
                
 				var gridHelper = new THREE.GridHelper( 10, 20 );
@@ -284,11 +267,11 @@
 
 				//
 
-				var ambientLight = new THREE.AmbientLight( 0xffffff, 0.2 );
+				ambientLight = new THREE.AmbientLight( 0xffffff, 0.8 );
 				scene.add( ambientLight );
 
 				var directionalLight = new THREE.DirectionalLight( 0xffffff, 0.8 );
-				directionalLight.position.set( 1, 1, - 1 );
+				//directionalLight.position.set( 0, , -1);
 				scene.add( directionalLight );
 
 				//
@@ -313,6 +296,8 @@
 
 				window.addEventListener( 'resize', onWindowResize, false );
 
+				scene.add(group);
+
 			}
 
 			function onWindowResize() {
@@ -334,6 +319,7 @@
 			}
 
 			function render() {
+
                var _DELTA = 0.1;
                if (action1 && !action1.paused && Math.abs(action1.time - 0.3) < _DELTA) {
                   action1.paused = true;
@@ -388,14 +374,10 @@
                   action12.paused = true;
                }
                
-               
 				var delta = clock.getDelta();
 
 				if ( mixer1 !== undefined  ) {
-
 			       mixer1.update( delta );
-             
-
 				}
 
                if (mixer2 !== undefined) {
@@ -413,7 +395,6 @@
                if (mixer5 !== undefined) {
                   mixer5.update(delta);
                }
-               
                
                if (mixer6 !== undefined) {
                   mixer6.update(delta);
@@ -439,6 +420,19 @@
                }
 
 				renderer.render( scene, camera );
+
+				
+				timer += 1; 
+				if (!timer % 5) {
+					//ambientLight.visible = false; 
+				} else {
+					//ambientLight.visible = true; 
+				}
+
+				if (timer > 200) {
+					group.rotation.y -= .1; 
+				}
+				
 
 			}
 
