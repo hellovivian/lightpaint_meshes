@@ -6,7 +6,7 @@
 		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
 		<style>
 			body {
-				background:#777;
+				background:#eeeeee;
 				padding:0;
 				margin:0;
 				overflow:hidden;
@@ -273,10 +273,17 @@
 
 				//
 
-				ambientLight = new THREE.AmbientLight( 0xffffff, 0.8 );
-				scene.add( ambientLight );
-
-				var directionalLight = new THREE.DirectionalLight( 0xffffff, 0.8 );
+               var ambient = new THREE.AmbientLight( 0xffffff, 0.4 );
+				scene.add( ambient );
+				var spotLight = new THREE.SpotLight( 0xffffff );
+				
+               spotLight.position.set( 0,0,0);
+               spotLight.angle = 200;
+               console.log(spotLight.position);
+				scene.add( spotLight );
+               var helper = new THREE.SpotLightHelper( spotLight, 5 );
+               spotLight.distance = 200;
+               scene.add( helper );
 				//directionalLight.position.set( 0, , -1);
 				//scene.add( directionalLight );
 
