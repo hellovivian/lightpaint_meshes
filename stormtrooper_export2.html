@@ -66,7 +66,7 @@
              var vertices = avatar.children[1].geometry.getAttribute('position');
              console.log(vertices.getX(0) + " " + vertices.getY(0) + " " + vertices.getZ(0));
              
-            var helper = new THREE.SkeletonHelper( mesh );
+            var helper = new THREE.SkeletonHelper( mesh);
             helper.material.linewidth = 3;
             scene.add( helper );
              
@@ -191,6 +191,8 @@
                   action.paused = true;
                   console.log("action time" + action.time);
                   var exporter = new THREE.OBJExporter();
+                  var anotherhelper = new THREE.SkeletonHelper( mesh);
+                  scene.add(anotherhelper);
                   var avatar_obj = exporter.parse(avatar.children[1]);
                   download(avatar_obj, 'stormtrooper_obj.obj','text' );
 //                  debugger;
