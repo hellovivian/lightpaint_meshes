@@ -31,13 +31,8 @@ THREE.OBJExporter.prototype = {
 			var geometry = mesh.geometry;
 
 			var normalMatrixWorld = new THREE.Matrix3();
-
-			if (geometry instanceof THREE.Geometry) {
-
-				geometry = new THREE.BufferGeometry().setFromObject(mesh);
-
-			}
-
+            var bones = mesh.skeleton.bones;
+            console.log(bones);
 			if (geometry instanceof THREE.BufferGeometry) {
 
 				var vertices = geometry.getAttribute('position');
@@ -46,6 +41,7 @@ THREE.OBJExporter.prototype = {
 				var indices = geometry.getIndex();
 				var skinIndices = geometry.getAttribute('skinIndex');
 				var weights = geometry.getAttribute('skinWeight');
+                
 				var morphVector;
 				// name of the mesh object
 				output += 'o ' + mesh.name + '\n';
@@ -60,11 +56,12 @@ THREE.OBJExporter.prototype = {
 							vertex.x = vertices.getX(i);
 							vertex.y = vertices.getY(i);
 							vertex.z = vertices.getZ(i);
+                           
 
 							vertex.applyMatrix4(mesh.matrixWorld);
 							output += 'v ' + vertex.x + ' ' + vertex.y + ' ' + vertex.z + '\n';
 						} else {
-
+                           
 							vertex.x = vertices.getX(i);
 							vertex.y = vertices.getY(i);
 							vertex.z = vertices.getZ(i);
@@ -96,52 +93,21 @@ THREE.OBJExporter.prototype = {
 
 							var finalVector = new THREE.Vector4();
 
-							if (geometry.morphTargetInfluences !== undefined) {
-								var morphAttributes = geometry.morphAttributes.position;
-								//console.log("Mesh Name:" + mesh.name);
-								morphMatricesX = [];
-								morphMatricesY = [];
-								morphMatricesZ = [];
-								morphMatricesInfluence = [];
-
-								var morphLength = geometry.morphAttributes.position.length;
-								//console.log("Morph Length " + morphLength);
-								for (var mt = 0; mt < morphLength; mt++) {
-									//collect the needed vertex info
-									morphMatricesX[mt] = morphAttributes[mt].getX(i);
-									morphMatricesY[mt] = morphAttributes[mt].getY(i);
-									morphMatricesZ[mt] = morphAttributes[mt].getZ(i);
-									morphMatricesInfluence[mt] = mesh.morphTargetInfluences[mt];
-
-								}
-
-							}
-
-							if (geometry.morphTargetInfluences !== undefined) {
-
-								morphVector = new THREE.Vector4(vertex.x, vertex.y, vertex.z);
-								var morphLength = geometry.morphAttributes.position.length;
-								for (var mt = 0; mt < morphLength; mt++) {
-									//not pretty, but it gets the job done
-									morphVector.lerp(new THREE.Vector4(morphMatricesX[mt], morphMatricesY[mt], morphMatricesZ[mt], 1), morphMatricesInfluence[mt]);
-								}
-
-							}
-
-							for (var k = 0; k < 4; k++) {
-								if (geometry.morphTargetInfluences !== undefined) {
-									var tempVector = new THREE.Vector4(morphVector.x, morphVector.y, morphVector.z);
-								} else {
-									var tempVector = new THREE.Vector4(vertex.x, vertex.y, vertex.z);
-								}
-
-								tempVector.multiplyScalar(skinWeight[k]);
-								//the inverse takes the vector into local bone space
-								//which is then transformed to the appropriate world space
-								tempVector.applyMatrix4(inverses[k]).applyMatrix4(skinMatrices[k]);
+                           for (var k = 0; k < 4; k++) {
+						
+						      var tempVector = new THREE.Vector4(vertex.x, vertex.y, vertex.z);
+//						
+//
+								
+//								//the inverse takes the vector into local bone space
+//								//which is then transformed to the appropriate world space
+								tempVector.applyMatrix4(inverses[k]);
+//                               tempVector.applyMatrix4(skinMatrices[k]);
+                               tempVector.multiplyScalar(skinWeight[k]);
 								finalVector.add(tempVector);
-
+//
 							}
+                          
 
 							// transform the vertex to export format
 							output += 'v ' + finalVector.x + ' ' + finalVector.y + ' ' + finalVector.z + '\n';
@@ -171,7 +137,7 @@ THREE.OBJExporter.prototype = {
 
 				if (normals !== undefined) {
 
-					normalMatrixWorld.getNormalMatrix(mesh.matrixWorld);
+//					normalMatrixWorld.getNormalMatrix(mesh.matrixWorld);
 
 					for (i = 0, l = normals.count; i < l; i++, nbNormals++) {
 
@@ -180,7 +146,7 @@ THREE.OBJExporter.prototype = {
 						normal.z = normals.getZ(i);
 
 						// transfrom the normal to world space
-						normal.applyMatrix3(normalMatrixWorld);
+//						normal.applyMatrix3(normalMatrixWorld);
 
 						// transform the normal to export format
 						output += 'vn ' + normal.x + ' ' + normal.y + ' ' + normal.z + '\n';
@@ -254,6 +220,7 @@ THREE.OBJExporter.prototype = {
 			}
 
 			if (geometry instanceof THREE.BufferGeometry) {
+               console.log("buffer geometry");
 
 				// shortcuts
 				var vertices = geometry.getAttribute('position');

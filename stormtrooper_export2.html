@@ -61,9 +61,11 @@
             avatar.position.set(0,0,0); 
              scene.add(avatar);
              var mesh = avatar;
+             mesh.children[1].updateMatrixWorld();
+             mesh.children[1].skeleton.calculateInverses();
+             var vertices = avatar.children[1].geometry.getAttribute('position');
+             console.log(vertices.getX(0) + " " + vertices.getY(0) + " " + vertices.getZ(0));
              
-             var bones = mesh.children[1].skeleton.bones;
-          
             var helper = new THREE.SkeletonHelper( mesh );
             helper.material.linewidth = 3;
             scene.add( helper );
@@ -191,17 +193,13 @@
                   var exporter = new THREE.OBJExporter();
                   var avatar_obj = exporter.parse(avatar.children[1]);
                   download(avatar_obj, 'stormtrooper_obj.obj','text' );
-                  debugger;
+//                  debugger;
 
                  
                }
 
                
 				var delta = clock.getDelta();
-
-				if ( mixer !== undefined  ) {
-			       mixer.update( delta );
-				}
 
                
 
