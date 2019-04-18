@@ -63,6 +63,8 @@
             }
        </script>
 		<script>
+		   var avatar1, avatar2, avatar3; 
+
            var timer = 0;
            var ambientLight; 
            var action1;
@@ -104,11 +106,13 @@
 				loader1.load( 'stormtrooper.dae', function ( collada1 ) {
 
 					var animations1 = collada1.animations;
-					var avatar1 = collada1.scene;
+					avatar1 = collada1.scene;
 
 					mixer1 = new THREE.AnimationMixer( avatar1 );
 			        action1 = mixer1.clipAction( animations1[ 0] ).play();  
                     avatar1.position.set(11 * Math.cos(1 * 30 / 180 * 3.14 ),0,11 * Math.sin(1*30 / 180 * 3.14));
+					avatar1.children[1].material = new THREE.MeshBasicMaterial({color: 0x004444, side: THREE.DoubleSide, skinning: true});
+
 			      	group.add( avatar1 );
                   
 //                   download(exporter.parse(avatar1), 'stormtrooper1.obj','text/obj' );
@@ -119,11 +123,13 @@
 				loader2.load( 'stormtrooper.dae', function ( collada2 ) {
 
 					var animations2 = collada2.animations;
-					var avatar2 = collada2.scene;
+					avatar2 = collada2.scene;
 
 					mixer2 = new THREE.AnimationMixer( avatar2 );
 			        action2 = mixer2.clipAction( animations2[ 0] ).play();
                   	avatar2.position.set(11 * Math.cos(2*30 / 180 * 3.14 ),0,11 * Math.sin(2*30 / 180 * 3.14));
+                  	avatar1.material = new THREE.MeshBasicMaterial({color: 0x880088,side: THREE.DoubleSide});
+
 			        group.add( avatar2 );
 //                   download(exporter.parse(avatar2), 'stormtrooper2.obj','text/obj' );
 
@@ -426,7 +432,7 @@
 
 				if (timer > 200) {
 					group.rotation.y -= .1;
-					
+
 					if (timer % 5 < 2) {
 						ambientLight.visible = false; 
 					} else {

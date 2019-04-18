@@ -1,0 +1,48 @@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/93/three.min.js"></script>
+<script src="https://threejs.org/examples/js/controls/OrbitControls.js"></script>
+
+<video id="videoTex" autoplay loop crossOrigin="anonymous" webkit-playsinline style="display:none">
+<source src="projection_video.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"'>
+</video>
+
+<script src="./ColladaLoader.js"></script>
+<script src="./testgeom.js"></script>
+<script>
+
+videoTex.volume = 0;
+var scene = new THREE.Scene();
+var camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.01, 1000);
+camera.position.set(0, 0, 10).setLength(15);
+var renderer = new THREE.WebGLRenderer({
+  antialias: true
+});
+var cube = new THREE.Mesh( new THREE.CubeGeometry( 200, 200, 200 ), new THREE.MeshNormalMaterial() );
+cube.position.y = 15;
+
+renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.setClearColor(0x202020);
+document.body.appendChild(renderer.domElement);
+
+var controls = new THREE.OrbitControls(camera, renderer.domElement);
+         
+ambientLight = new THREE.AmbientLight( 0x0000ff, 1);
+scene.add( ambientLight );
+
+var clock = new THREE.Clock();
+var time = 0;
+var rotation = THREE.Math.degToRad(15);
+
+render();
+
+function render() {
+  requestAnimationFrame(render);
+  time += clock.getDelta();
+  renderer.render(scene, camera);
+  if (time % 10  == 1) {
+    ambientLight.visible = false; 
+  } else {
+    ambientLight.visible = true; 
+  }
+}
+
+</script>

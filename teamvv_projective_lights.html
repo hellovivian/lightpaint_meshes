@@ -1,12 +1,15 @@
+<input type="button" value="Toggle strobe" onclick="toggleStrobe();">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/93/three.min.js"></script>
 <script src="https://threejs.org/examples/js/controls/OrbitControls.js"></script>
+<script src="https://code.jquery.com/jquery-3.4.0.min.js"crossorigin="anonymous"></script>
 
 
 <video id="videoTex" autoplay loop crossOrigin="anonymous" webkit-playsinline style="display:none">
-<source src="bluefire.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"'>
+<source src="projection_video.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"'>
 </video>
 <script src="./ColladaLoader.js"></script>
-<script src="./teamvv_simplegeometries.js"></script>
+<!-- <script src="./teamvv_simplegeometries.js"></script> -->
+<script src="./testgeom.js"></script>
 <script>
 videoTex.volume = 0;
 var scene = new THREE.Scene();
@@ -15,14 +18,13 @@ camera.position.set(0, 0, 10).setLength(15);
 var renderer = new THREE.WebGLRenderer({
   antialias: true
 });
+var _STROBE_INTERVAL = 10000000;
 renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.setClearColor(0x202020);
 document.body.appendChild(renderer.domElement);
 
 var controls = new THREE.OrbitControls(camera, renderer.domElement);
    
-   
-
    
 //var geometry = new THREE.PlaneGeometry( 5, 20, 32 );
 //
@@ -52,7 +54,8 @@ var frustPoints = [
 var frustGeom = new THREE.BufferGeometry().setFromPoints(frustPoints);
 frustGeom.setIndex([0,1, 0, 2, 0, 3, 0, 4, 1, 2, 2, 4, 4, 3, 3, 1]);
 var frustumHelper = new THREE.LineSegments(frustGeom, new THREE.LineBasicMaterial({color: 0xff0000}));
-frustumHelper.position.set(0, 0, 10);
+frustumHelper.position.set(0, 10, 5);
+frustumHelper.rotation.x = -44.5  ; 
 frustumHelper.updateMatrixWorld();
 scene.add(frustumHelper);
 
@@ -121,7 +124,8 @@ var projectiveMaterial = new THREE.ShaderMaterial({
     `,
     side: THREE.DoubleSide
   }); 
-var screen = new THREE.Mesh(rotatedGeometriesMesh.geometry, projectiveMaterial );
+//var screen = new THREE.Mesh(rotatedGeometriesMesh.geometry, projectiveMaterial );
+var screen = new THREE.Mesh(finalMesh.geometry, projectiveMaterial );
 screen.position.z = -10;
 scene.add(screen);
 
@@ -135,29 +139,25 @@ var rotation = THREE.Math.degToRad(15);
 
 render();
 
+function toggleStrobe() {
+  if (_STROBE_INTERVAL != 1/30){
+    _STROBE_INTERVAL = 1/30} else {
+      _STROBE_INTERVAL = 10000000;
+    }
+}
 function render() {
   requestAnimationFrame(render);
   time += clock.getDelta();
 //  screen.rotation.y = Math.sin(time * 0.314) * rotation;
-  screen.rotation.y += 0.01;
+  screen.rotation.y += 0.1;
 //  screen.position.z = Math.sin(time * 0.71) * 4 - 2;
 //  screen.position.y = Math.cos(time * 0.44) * 2;
+  if (time > _STROBE_INTERVAL) {
+      $("canvas").hide();
+      time = 0; 
+  } else {
+      $("canvas").show();
+  }
   renderer.render(scene, camera);
 }
-
-   
-   
-				var loader = new THREE.ColladaLoader();
-				loader.load( './stormtrooper.dae', function ( collada ) {
-
-					var animations = collada.animations;
-                   console.log(collada.animations);
-					var avatar = collada.scene;
-
-					mixer = new THREE.AnimationMixer( avatar );
-					var action = mixer.clipAction( animations[ 0] ).play();
-
-					scene.add( avatar );
-
-				} );
 </script>
