@@ -270,7 +270,10 @@
            
             function download() {
                console.log("init download");
-               var output = ""
+               var output = "";
+               var indexVertex = 0;
+		       var indexVertexUvs = 0;
+		       var indexNormals = 0;
                var vertices = mesh.geometry.getAttribute('position');
                    var normals = mesh.geometry.getAttribute('normal');
                    
@@ -278,13 +281,23 @@
 				  var indices = mesh.geometry.getIndex();
 				  var skinIndices = mesh.geometry.getAttribute('skinIndex');
 				  var weights = mesh.geometry.getAttribute('skinWeight');
-               
+//               debugger;;
                output += 'o ' + mesh.name + '\n';
                
                var nbVertex = 0;
 			   var nbNormals = 0;
 			   var nbVertexUvs = 0;
+               var normalMatrixWorld = new THREE.Matrix3();
                var vertex = new THREE.Vector3();
+               
+		       var normal = new THREE.Vector3();
+		       var uv = new THREE.Vector2();
+
+              var i,
+              j,
+              l,
+              m,
+              face = [];
                for (i = 0, l = vertices.count; i < l; i++, nbVertex++) {
                   vertex.x = vertices.getX(i);
 							vertex.y = vertices.getY(i);
@@ -327,9 +340,9 @@
 								
 //								//the inverse takes the vector into local bone space
 //								//which is then transformed to the appropriate world space
-								tempVector.applyMatrix4(inverses[k]);
+//								tempVector.applyMatrix4(inverses[k]);
 //                               tempVector.applyMatrix4(skinMatrices[k]);
-                               tempVector.multiplyScalar(skinWeight[k]);
+//                               tempVector.multiplyScalar(skinWeight[k]);
 								finalVector.add(tempVector);
 //
 							}
@@ -384,14 +397,16 @@
                download_to_obj(output, "output.obj", 'text');
                   
             }
+            var downloaded = false;
 
 			function render() {
 
 				requestAnimationFrame( render );
 
-				if ( state.download ) {
+				if ( state.download && downloaded == false ) {
                      
 					download();
+                   downloaded = true;
                    
                    
 
