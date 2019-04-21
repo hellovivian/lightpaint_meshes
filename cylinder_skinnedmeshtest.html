@@ -346,7 +346,7 @@
 								finalVector.add(tempVector);
 //
 							}
-                           output += 'v ' + finalVector.x + ' ' + finalVector.y + ' ' + finalVector.z + '\n';
+                           output += 'v ' + vertex.x + ' ' + vertex.y + ' ' + vertex.z + '\n';
                }
                
 //               for uv's
@@ -370,7 +370,7 @@
                            normal.z = normals.getZ(i);
 
                            // transfrom the normal to world space
-   //						normal.applyMatrix3(normalMatrixWorld);
+   						normal.applyMatrix3(normalMatrixWorld);
 
                            // transform the normal to export format
                            output += 'vn ' + normal.x + ' ' + normal.y + ' ' + normal.z + '\n';
@@ -394,7 +394,7 @@
 
 					}
 
-               download_to_obj(output, "output.obj", 'text');
+               download_to_obj(output, "output1.obj", 'text');
                   
             }
             var downloaded = false;
